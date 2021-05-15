@@ -6,9 +6,8 @@ class AppMessages{
   static const String NEW_ACCOUNT = "Não tem uma conta? Cadastre-se!";
   static const String NEW_ACCOUNT_TITLE = "Nova Conta";
 
-
-  static const String ERROR_EMAIL_IN_USE = "Este email já está em uso!";
-  static const String DEFAULT_ERROR = "Ocorreu um erro durante a requisição!";
+  static const String ERROR_INVALID_EMAIL = "Digite um e-mail válido!";
+  static const String DEFAULT_ERROR = "Ocorreu um problema durante a requisição.";
 
 
 }

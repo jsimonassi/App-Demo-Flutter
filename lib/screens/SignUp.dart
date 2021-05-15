@@ -1,3 +1,4 @@
+import 'package:app_demo_flutter/components/ModalDialog.dart';
 import 'package:app_demo_flutter/components/RedButton.dart';
 import 'package:app_demo_flutter/constants/Colors.dart';
 import 'package:app_demo_flutter/constants/Messages.dart';
@@ -36,7 +37,9 @@ class _SignUpState extends State<SignUp> {
         }
       }
     }catch(e){
-      print(e);
+      showDialog(context: context,
+          builder: (_) => ModalDialog("Deu velha!", e.message, "OK",
+                  () =>{if(Navigator.canPop(context)) Navigator.pop(context)}));
     }
   }
 

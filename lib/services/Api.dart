@@ -7,12 +7,14 @@ class Api{
 
   static Future<AuthResult> registerUser(String email, String password) async {
     try{
-      AuthResult response = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+      FirebaseAuth auth = FirebaseAuth.instance;
+      AuthResult response = await auth.createUserWithEmailAndPassword(email: email, password: password);
       return response;
     }catch(e){
-      String error = e.errorCode != null ? e.errorCode : "";
-      if(error.isNotEmpty && error.contains("ERROR_EMAIL_ALREADY_IN_USE")){
-        throw FormatException(AppMessages.ERROR_EMAIL_IN_USE);
+      print(e);
+      String error = e != null? e.code : "";
+      if(error.contains("ERROR_INVALID_EMAIL")){
+        throw FormatException(AppMessages.ERROR_INVALID_EMAIL);
       }
       throw FormatException(AppMessages.DEFAULT_ERROR);
     }
