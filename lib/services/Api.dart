@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:app_demo_flutter/constants/Messages.dart';
 import 'package:app_demo_flutter/models/User.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Api{
 
@@ -29,4 +32,15 @@ class Api{
 
     }
   }
+
+  static Future<String> updatePicture(String path, String filename) async {
+    try{
+      StorageUploadTask task = FirebaseStorage.instance.ref().child(filename).putFile(File(path));
+      String downloadUrl = await (await task.onComplete).ref.getDownloadURL();
+      return downloadUrl;
+    }catch(e){
+
+    }
+  }
+
 }
