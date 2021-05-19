@@ -43,4 +43,34 @@ class Api{
     }
   }
 
+  static Future<User> loginWithEmailAndPassword(String email, String password) async {
+    try{
+      AuthResult response = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      if(response.user != null){
+        return await getUser(response.user.uid);
+      }
+      return null;
+    }catch(e){
+
+    }
+  }
+  
+  static Future<User> getUser(String uid) async {
+    try{
+      DocumentSnapshot userDoc = await Firestore.instance.collection("users").document(uid).get();
+      Map<String,dynamic> infos = userDoc.data;
+      if(infos == null){
+        return null;
+      }
+      User user = User();
+      user.name = infos["name"];
+      user.urlImage = infos["urlImage"];
+      user.uid = infos["uid"];
+      user.email = infos["email"];
+      return user;
+    }catch(e){
+
+    }
+  }
+
 }

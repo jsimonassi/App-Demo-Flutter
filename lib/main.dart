@@ -1,3 +1,4 @@
+import 'package:app_demo_flutter/constants/Colors.dart';
 import 'package:app_demo_flutter/screens/Login.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.black,
+        accentColor: AppColors.RED_BUTTON_COLOR,
       ),
       home: Login(),
     );

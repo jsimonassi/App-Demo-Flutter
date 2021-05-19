@@ -1,6 +1,8 @@
 import 'package:app_demo_flutter/components/RedButton.dart';
 import 'package:app_demo_flutter/constants/Colors.dart';
 import 'package:app_demo_flutter/constants/Messages.dart';
+import 'package:app_demo_flutter/models/User.dart';
+import 'package:app_demo_flutter/services/Api.dart';
 import 'package:flutter/material.dart';
 import 'SignUp.dart';
 
@@ -11,9 +13,32 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
   goToSignUp(){
     Navigator.push(context,
     MaterialPageRoute(builder: (BuildContext context) => SignUp()));
+  }
+
+  initLoginFlux() async {
+    try{
+      if(validateInfos()){
+        User user = await Api.loginWithEmailAndPassword(_emailController.text, _passwordController.text);
+        if(user != null){
+          print(user);
+          //Todo: Trocar de tela enviando informações
+        }
+        //Todo: Exibir modal de erro
+      }
+    }catch(e){
+
+    }
+  }
+
+  bool validateInfos(){
+    return _emailController.text.isNotEmpty &&
+        _passwordController.text.isNotEmpty;
   }
 
   @override
@@ -50,6 +75,7 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.all(Radius.circular(5)),
                   ),
                   child: TextFormField(
+                    controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -77,7 +103,9 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.all(Radius.circular(5)),
                   ),
                   child: TextFormField(
+                    controller: _passwordController,
                     keyboardType: TextInputType.emailAddress,
+                    obscureText: true,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.only(
@@ -98,7 +126,7 @@ class _LoginState extends State<Login> {
               SizedBox(
                 height: size.height * 0.05,
               ),
-              RedButton("ENTRAR", () => print("Fui clicado")),
+              RedButton("ENTRAR", () => initLoginFlux()),
               Container(
                 child: TextButton(
                   onPressed: () {goToSignUp();},

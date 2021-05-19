@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:app_demo_flutter/components/Loading.dart';
 import 'package:app_demo_flutter/components/ModalDialog.dart';
 import 'package:app_demo_flutter/components/RedButton.dart';
 import 'package:app_demo_flutter/constants/Colors.dart';
@@ -31,6 +32,7 @@ class _SignUpState extends State<SignUp> {
 
   createAccount() async{
     try{
+      Loading.enableLoading(context);
       if(validateInfos()){
         AuthResult response = await Api.registerUser(_emailController.text, _passwordController.text); //Auth
         String downloadUrl = _localImageUrl.isNotEmpty?
@@ -44,11 +46,13 @@ class _SignUpState extends State<SignUp> {
           newUser.urlImage = downloadUrl;
           await Api.updateUser(newUser);
         }
+        Loading.disableLoading(context);
         showDialog(context: context,
             builder: (_) => ModalDialog("Conta criada!", "", "OK",
                     () =>{if(Navigator.canPop(context)) Navigator.pop(context)}));
       }
     }catch(e){
+      Loading.disableLoading(context);
       showDialog(context: context,
           builder: (_) => ModalDialog("Deu velha!", e.message, "OK",
                   () =>{if(Navigator.canPop(context)) Navigator.pop(context)}));
