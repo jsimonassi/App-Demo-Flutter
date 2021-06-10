@@ -1,10 +1,15 @@
+import 'dart:convert';
 import 'package:app_demo_flutter/components/RedButton.dart';
 import 'package:app_demo_flutter/constants/Colors.dart';
 import 'package:app_demo_flutter/constants/Messages.dart';
 import 'package:app_demo_flutter/models/User.dart';
+import 'package:app_demo_flutter/screens/MenuNavigation.dart';
 import 'package:app_demo_flutter/services/Api.dart';
+import 'package:app_demo_flutter/storage/CurrentUser.dart';
+import 'package:app_demo_flutter/storage/Storage.dart';
 import 'package:flutter/material.dart';
 import 'SignUp.dart';
+import 'Home.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -16,6 +21,21 @@ class _LoginState extends State<Login> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
+  @override
+  void initState(){
+    getLastUser();
+    super.initState();
+  }
+
+  getLastUser() async {
+    String lastUser = await Storage.retrieve("last_user");
+    if(lastUser == null) return;
+    Map<String, dynamic> mapUser = jsonDecode(lastUser);
+    CurrentUser.user = User().mapToUser(mapUser);
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (BuildContext context) => MenuNavigation()), (route) => false);
+  }
+
   goToSignUp(){
     Navigator.push(context,
     MaterialPageRoute(builder: (BuildContext context) => SignUp()));
@@ -26,8 +46,10 @@ class _LoginState extends State<Login> {
       if(validateInfos()){
         User user = await Api.loginWithEmailAndPassword(_emailController.text, _passwordController.text);
         if(user != null){
-          print(user);
-          //Todo: Trocar de tela enviando informações
+          CurrentUser.user = user;
+          await Storage.save("last_user", CurrentUser.user.toMap());
+          Navigator.pushAndRemoveUntil(context,
+              MaterialPageRoute(builder: (BuildContext context) => MenuNavigation()), (route) => false);
         }
         //Todo: Exibir modal de erro
       }

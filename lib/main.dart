@@ -1,5 +1,7 @@
 import 'package:app_demo_flutter/constants/Colors.dart';
+import 'package:app_demo_flutter/screens/Home.dart';
 import 'package:app_demo_flutter/screens/Login.dart';
+import 'package:app_demo_flutter/screens/Search.dart';
 import 'package:flutter/material.dart';
 
 void main() {
