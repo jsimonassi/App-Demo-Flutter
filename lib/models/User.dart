@@ -4,6 +4,7 @@ class User{
   String _email;
   String _urlImage;
   String _uid;
+  String _pushId;
 
   User();
 
@@ -13,6 +14,7 @@ class User{
       "email": this._email,
       "urlImage": this._urlImage,
       "uid": this._uid,
+      "pushId": this._pushId
     };
     return map;
   }
@@ -23,6 +25,7 @@ class User{
     user.email = mapUser["email"];
     user.urlImage = mapUser["urlImage"];
     user.uid = mapUser["uid"];
+    user._pushId = mapUser["pushId"];
     return user;
   }
 
@@ -48,5 +51,11 @@ class User{
 
   set email(String value) {
     _email = value;
+  }
+
+  String get pushId => _pushId;
+
+  set pushId(String value) {
+    _pushId = value;
   }
 }

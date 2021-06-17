@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:app_demo_flutter/constants/Messages.dart';
+import 'package:app_demo_flutter/models/Lobby.dart';
 import 'package:app_demo_flutter/models/User.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class Api{
 
@@ -25,6 +27,10 @@ class Api{
   
   static Future<void> updateUser(User newUser) async {
     try{
+      OSPermissionSubscriptionState status = await OneSignal.shared.getPermissionSubscriptionState();
+      if(status != null){
+        newUser.pushId = status.subscriptionStatus.userId;
+      }
       return await Firestore.instance.collection("users")
           .document(newUser.uid)
           .setData(newUser.toMap());
@@ -67,7 +73,41 @@ class Api{
       user.urlImage = infos["urlImage"];
       user.uid = infos["uid"];
       user.email = infos["email"];
+      user.pushId = infos["pushId"];
       return user;
+    }catch(e){
+
+    }
+  }
+
+  static Future<void> sendPushNotification(User user) async {
+    try{
+      if(user.pushId != null){
+        return await OneSignal.shared.postNotification(
+            OSCreateNotification(playerIds: [user.pushId],
+                content: "DESCRIÇÃO DA NOTIFICAÇÃO",
+
+            ));
+      }
+    }catch(e){
+
+    }
+  }
+
+  static Future<void> updateLobby(Lobby lobby) async {
+    try{
+      return await Firestore.instance.collection("lobbys")
+          .document(lobby.lobbyId)
+          .setData(lobby.toMap());
+    }catch(e){
+
+    }
+  }
+
+  static Stream<DocumentSnapshot> createListenerForLobby(Lobby lobby){
+    try{
+      return Firestore.instance.collection("lobbys")
+          .document(lobby.lobbyId).snapshots();
     }catch(e){
 
     }

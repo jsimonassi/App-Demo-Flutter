@@ -1,3 +1,7 @@
+import 'package:app_demo_flutter/components/RedButton.dart';
+import 'package:app_demo_flutter/models/Lobby.dart';
+import 'package:app_demo_flutter/screens/LobbyPage.dart';
+import 'package:app_demo_flutter/services/Api.dart';
 import 'package:app_demo_flutter/storage/CurrentUser.dart';
 import 'package:flutter/material.dart';
 
@@ -50,6 +54,16 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
+            RedButton("ENVIAR NOTIFICAÇÃO", () {
+              Api.sendPushNotification(CurrentUser.user);
+            }),
+            RedButton("CRIAR LOBBY", () async {
+              Lobby lobby = Lobby();
+              lobby.player1 = CurrentUser.user.uid;
+              await Api.updateLobby(lobby);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) => LobbyPage(lobby)));
+            })
           ],
         ),
       )
