@@ -1,0 +1,9 @@
+1 - Separar os ambientes (Firebase);
+
+2 - Separar as .envs;
+
+3 - Assinatura do app;
+
+4 - Criar ícones;
+
+5 - Criar e enviar app para play store/app store;

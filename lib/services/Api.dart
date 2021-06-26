@@ -27,15 +27,15 @@ class Api{
   
   static Future<void> updateUser(User newUser) async {
     try{
-      OSPermissionSubscriptionState status = await OneSignal.shared.getPermissionSubscriptionState();
-      if(status != null){
-        newUser.pushId = status.subscriptionStatus.userId;
-      }
+      // OSPermissionSubscriptionState status = await OneSignal.shared.getPermissionSubscriptionState();
+      // if(status != null){
+      //   newUser.pushId = status.subscriptionStatus.userId;
+      // }
       return await Firestore.instance.collection("users")
           .document(newUser.uid)
           .setData(newUser.toMap());
     }catch(e){
-
+      print("Deu erro! ${e.toString()}");
     }
   }
 
