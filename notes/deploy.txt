@@ -1,4 +1,4 @@
-1 - Separar os ambientes (Firebase);
+1 - Separar os ambientes (Firebase); - Ok
 
 2 - Separar as .envs;
 

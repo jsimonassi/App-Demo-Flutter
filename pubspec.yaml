@@ -37,6 +37,7 @@ dependencies:
   shared_preferences: ^2.0.5
   onesignal_flutter: ^2.3.4
   uuid: ^3.0.4
+  flutter_dotenv: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +52,8 @@ flutter:
   assets:
     - assets/images/logo.png
     - assets/images/profile-icon.png
+    - .env_debug
+    - .env_release
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -2,11 +2,17 @@ import 'package:app_demo_flutter/constants/Colors.dart';
 import 'package:app_demo_flutter/screens/Home.dart';
 import 'package:app_demo_flutter/screens/Login.dart';
 import 'package:app_demo_flutter/screens/Search.dart';
+import 'package:app_demo_flutter/services/Config.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  try{
+    await Config.loadEnvs();
+    runApp(MyApp());
+  }catch(e){
+    throw FlutterError(e.toString());
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -14,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    OneSignal.shared.init("28f7175c-6b6a-4051-acd2-f94095c3a3e1");
+    OneSignal.shared.init(Config.env['ONE_SIGNAL_KEY']);
     OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
 
     return MaterialApp(
